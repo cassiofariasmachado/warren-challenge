@@ -1,6 +1,5 @@
 {
-  "name": "warren-baking-app",
-  "version": "0.1.0",
+  "name": "warren-banking-app",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.11.2",
@@ -24,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sonar-scan": "sonar-scanner -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=$SONAR_ORGANIZATION -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_TOKEN"
   },
   "eslintConfig": {
     "extends": [
@@ -46,6 +46,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
-    "@types/styled-components": "^5.1.7"
+    "@types/styled-components": "^5.1.7",
+    "sonarqube-scanner": "^2.8.0"
   }
 }

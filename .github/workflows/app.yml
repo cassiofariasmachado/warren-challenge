@@ -1,0 +1,93 @@
+name: Warren Banking APP
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - app/**/*
+  pull_request:
+    branches: [main]
+    paths: app/**/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install packages
+        working-directory: app
+        run: yarn install
+
+      - name: Build
+        working-directory: app
+        run: yarn run build
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install packages
+        working-directory: app
+        run: yarn install
+
+      - name: Test
+        working-directory: app
+        run: yarn test
+
+  sonar-scan:
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install packages
+        working-directory: app
+        run: yarn install
+
+      - name: Scan
+        working-directory: app
+        env:
+          PROJECT_KEY: warren-banking-app
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+          SONAR_URL: ${{ secrets.SONAR_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run sonar-scan

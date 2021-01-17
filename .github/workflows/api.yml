@@ -1,0 +1,65 @@
+name: Warren Banking API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - api/**/*
+  pull_request:
+    branches: [main]
+    paths: api/**/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.101
+
+      - name: Build
+        working-directory: api
+        run: dotnet build --configuration Release
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.101
+
+      - name: Test
+        working-directory: api
+        run: dotnet test --verbosity normal
+
+  sonar-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Scan
+        working-directory: api
+        env:
+          PROJECT_KEY: warren-banking-api
+          SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
+          SONAR_URL: ${{ secrets.SONAR_URL }}
+          SONAR_SECRET: ${{ secrets.SONAR_SECRET }}
+        run: docker run --rm
+          -w /app
+          -v $(pwd):/app
+          -e PROJECT_KEY=${PROJECT_KEY}
+          -e SONAR_ORGANIZATION=${SONAR_ORGANIZATION}
+          -e SONAR_URL=${SONAR_URL}
+          -e SONAR_SECRET=${SONAR_SECRET}
+          cassiofariasmachado/dotnet-sonarscanner:latest
+          sh scripts/sonar-scan.sh

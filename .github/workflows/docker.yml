@@ -1,0 +1,24 @@
+name: Warren Banking APP/API (Docker Compose)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - api/**/*
+      - apa/**/*
+  pull_request:
+    branches: [main]
+    paths:
+      - api/**/*
+      - apa/**/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker Compose Build
+        run: docker-compose build

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="3.0.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="FakeItEasy" Version="6.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -22,17 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Warren.Banking.Core\Warren.Banking.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="UnitTest1.cs" />
-    <Compile Remove="Entities\**" />
-    <Compile Remove="Aggregates\Entities\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Entities\**" />
-    <EmbeddedResource Remove="Aggregates\Entities\**" />
   </ItemGroup>
 
   <ItemGroup>
